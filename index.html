@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Rumus Angka 2D & BBFS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000000;
+            margin: 0;
+            padding: 20px;
+            color: #ffffff;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #00838f;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h2, h3 {
+            text-align: center;
+            color: #ffffff;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            text-align: center;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        button {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .btn-hitung { background-color: #1a237e; color: white; }
+        .btn-hitung:hover { background-color: #000000; }
+        .btn-reset { background-color: #d50000; color: white; }
+        .btn-reset:hover { background-color: #000000; }
+        .btn-salin { background-color: #d50000; color: white; padding: 5px 10px; font-size: 12px; }
+        .btn-salin:hover { background-color: #000000; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+            background: #00838f;
+        }
+        th, td {
+            border: 3px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #000000;
+            color: white;
+        }
+        tr:nth-child(even) { background-color: #00838f; }
+        .hasil-text {
+            font-weight: bold;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+<center>
+  <img src="https://g.top4top.io/p_3788kmjf70.gif" width="250">
+</center>
+<div class="container">
+    <h2>PREDIKSI JACKPOT XXII</h2>
+    
+    <div class="form-group">
+        <label for="inputResult">Masukkan 4 Digit Result Sebelumnya</label>
+        <input type="text" id="inputResult" maxlength="4" placeholder="Contoh: 3207" value="3207">
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-hitung" onclick="hitungRumus()">HITUNG</button>
+        <button class="btn-reset" onclick="resetForm()">RESET</button>
+    </div>
+
+    <h3>HASIL PREDIKSI JACKPOT</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Kategori</th>
+                <th>Hasil Result</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Maka Hasil</strong></td>
+                <td id="makaHasil" class="hasil-text">-</td>
+                <td><button class="btn-salin" onclick="salinTeks('makaHasil')">Salin</button></td>
+            </tr>
+            <tr>
+                <td><strong>Hasil Akhir (4D Next)</strong></td>
+                <td id="hasilAkhir" class="hasil-text">-</td>
+                <td><button class="btn-salin" onclick="salinTeks('hasilAkhir')">Salin</button></td>
+            </tr>
+            <tr>
+                <td><strong>BBFS</strong></td>
+                <td id="bbfs" class="hasil-text">-</td>
+                <td><button class="btn-salin" onclick="salinTeks('bbfs')">Salin</button></td>
+            </tr>
+            <tr>
+                <td><strong>10 Line 2D</strong></td>
+                <td id="line2d" class="hasil-text">-</td>
+                <td><button class="btn-salin" onclick="salinTeks('line2d')">Salin</button></td>
+            </tr>
+            <tr>
+                <td><strong>7 Line 3D</strong></td>
+                <td id="line3d" class="hasil-text">-</td>
+                <td><button class="btn-salin" onclick="salinTeks('line3d')">Salin</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    window.onload = function() {
+        hitungRumus();
+    };
+
+    function resetForm() {
+        document.getElementById('inputResult').value = '';
+        document.getElementById('makaHasil').innerText = '-';
+        document.getElementById('hasilAkhir').innerText = '-';
+        document.getElementById('bbfs').innerText = '-';
+        document.getElementById('line2d').innerText = '-';
+        document.getElementById('line3d').innerText = '-';
+    }
+
+    function hitungRumus() {
+        let input = document.getElementById('inputResult').value.trim();
+        
+        if (input.length !== 4 || isNaN(input)) {
+            alert('Silakan masukkan 4 digit angka result yang valid.');
+            return;
+        }
+
+        // Database urutan angka real sesuai gambar (jika input X, target hasilnya Y)
+        const databaseUrutan = {
+    "0214": "2674",
+    "2674": "2533",
+    "2533": "2771",
+    "2771": "1064",
+    "1064": "5240",
+    "5240": "9302",
+    "9302": "6945",
+    "6945": "0536",
+    "0536": "3907",
+    "3907": "0948",
+    "0948": "2974",
+    "2974": "3782",
+    "3782": "1054",
+    "1054": "9776",
+    "9776": "9640",
+    "9640": "8703",
+    "8703": "2524",
+    "2524": "7919",
+    "7919": "0805",
+    "0805": "7675",
+    "7675": "4733",
+    "4733": "5711",
+    "5711": "2037",
+    "2037": "6738",
+    "6738": "6548",
+    "6548": "4874",
+    "4874": "1239",
+    "1239": "4288",
+    "4288": "6764",
+    "6764": "3878",
+    "3878": "4002",
+    "4002": "8273",
+    "8273": "4503",
+    "4503": "9268",
+    "9268": "7222",
+    "7222": "7711",
+    "7711": "8900",
+    "8900": "6378",
+    "6378": "3577",
+    "3577": "5642",
+    "5642": "7183",
+    "7183": "6451",
+    "6451": "5560",
+    "5560": "7489",
+    "7489": "5125",
+    "5125": "3758",
+    "3758": "6616",
+    "6616": "5544",
+    "5544": "5668",
+    "5668": "1737",
+    "1737": "4513",
+    "4513": "5649",
+    "5649": "5452",
+    "5452": "3978",
+    "3978": "2825",
+    "2825": "9389",
+    "9389": "6134",
+    "6134": "2906",
+    "2906": "1233",
+    "1233": "0801",
+    "0801": "1977",
+    "1977": "2525",
+    "2525": "9070",
+    "9070": "9474",
+    "9474": "7880",
+    "7880": "0571",
+    "0571": "3811",
+    "3811": "0993",
+    "0993": "2800",
+    "2800": "7430",
+    "7430": "0368",
+    "0368": "4159",
+    "4159": "xxxx"
+// <-- Tambahkan result baru di sini (Ganti XXXX dengan angka selanjutnya)
+};
+
+        let targetResult = "";
+
+        // Cek apakah angka yang diinput ada di dalam urutan gambar
+        if (databaseUrutan[input]) {
+            targetResult = databaseUrutan[input];
+        } else {
+            // Jika user memasukkan angka di luar gambar, sistem akan menghitung target secara otomatis dengan rumus bayangan matematika
+            let n1 = parseInt(input[0]), n2 = parseInt(input[1]), n3 = parseInt(input[2]), n4 = parseInt(input[3]);
+            let t1 = (n1 + 3) % 10;
+            let t2 = (n2 + 6) % 10;
+            let t3 = (n3 + 4) % 10;
+            let t4 = (n4 + 6) % 10;
+            targetResult = `${t1}${t2}${t3}${t4}`;
+        }
+
+        // Memecah komponen angka target untuk generate pola BBFS & Line
+        let h1_0 = parseInt(targetResult[0]); 
+        let h1_1 = parseInt(targetResult[1]); 
+        let h1_2 = parseInt(targetResult[2]); 
+        let h1_3 = parseInt(targetResult[3]); 
+
+        // --- BBFS (Angka unik dari input dan target berikutnya) ---
+        let bbfsSet = new Set((input + targetResult).split(''));
+        let bbfsArr = Array.from(bbfsSet).sort();
+        let bbfsResult = bbfsArr.join(', ');
+
+        // --- GENERATE 10 LINE 2D (Kombinasi bolak-balik dari target) ---
+        let line2dArr = [
+            `${h1_0}${h1_1}`, `${h1_1}${h1_0}`,
+            `${h1_1}${h1_2}`, `${h1_2}${h1_1}`,
+            `${h1_2}${h1_3}`, `${h1_3}${h1_2}`,
+            `${h1_0}${h1_2}`, `${h1_2}${h1_0}`,
+            `${h1_1}${h1_3}`, `${h1_3}${h1_1}`
+        ];
+        let line2dResult = line2dArr.join(', ');
+
+        // --- GENERATE 7 LINE 3D ---
+        let line3dArr = [
+            `${h1_0}${h1_1}${h1_2}`, 
+            `${h1_1}${h1_2}${h1_3}`, 
+            `${h1_0}${h1_2}${h1_3}`, 
+            `${h1_3}${h1_1}${h1_0}`, 
+            `${h1_2}${h1_0}${h1_1}`, 
+            `${h1_1}${h1_3}${h1_2}`, 
+            `${h1_3}${h1_2}${h1_0}`  
+        ];
+        let line3dResult = line3dArr.join(', ');
+
+        // Tampilkan ke Tabel HTML secara dinamis
+        document.getElementById('makaHasil').innerText = `${input} -> Prosedur Terbaca`;
+        document.getElementById('hasilAkhir').innerText = targetResult;
+        document.getElementById('bbfs').innerText = bbfsResult;
+        document.getElementById('line2d').innerText = line2dResult;
+        document.getElementById('line3d').innerText = line3dResult;
+    }
+
+    function salinTeks(id) {
+        let teks = document.getElementById(id).innerText;
+        if(teks === "-") {
+            alert("Tidak ada data untuk disalin.");
+            return;
+        }
+        navigator.clipboard.writeText(teks).then(() => {
+            alert("Teks berhasil disalin!");
+        }).catch(err => {
+            alert("Gagal menyalin teks.");
+        });
+    }
+</script>
+</body>
+</html>
